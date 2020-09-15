@@ -37,9 +37,9 @@ comment_if_end = _{ chevron_left_bang ~ "[" ~ ^"endif" ~ "]" ~ comment_tag_end }
 //
 // ATTRIBUTES
 //
-attr = { attr_key ~ (equal ~ (attr_non_quoted | attr_quoted ))? }
+attr = { whites ~ attr_key ~ (whites ~ equal ~ whites ~ (attr_non_quoted | attr_quoted ))? }
 attr_quoted =  _{PUSH(quote) ~ attr_value ~ POP }
-attr_non_quoted = @{ !quote ~ (!(WHITESPACE | chevron_right) ~ ANY)* }
+attr_non_quoted = @{ !quote ~ (!(white1 | chevron_right) ~ ANY)* }
 attr_key = { ASCII_ALPHA ~ text_chars* }
 attr_value = { (!PEEK ~ ANY)* }
 
@@ -84,8 +84,8 @@ el_void_xml = _{ chevron_left_normal ~ el_name ~ attr* ~ chevron_right_closed }
 // and have both a start tag and an end tag
 // Ex: <html lang="en"></html>
 el_normal = _{ el_normal_start ~ (!el_normal_end ~ node)* ~ el_normal_end }
-el_normal_start = _{ chevron_left_normal ~ PUSH(el_name) ~ attr* ~ chevron_right_normal}
-el_normal_end = { chevron_left_closed ~ POP ~ chevron_right_normal}
+el_normal_start = _{ chevron_left_normal ~ whites ~ PUSH(el_name) ~ attr* ~ whites ~ chevron_right_normal}
+el_normal_end = { chevron_left_closed ~ whites ~ POP ~ whites ~ chevron_right_normal}
 
 // Raw text elements are elements with text/script content that
 // might interfere with the normal html syntax
@@ -131,4 +131,5 @@ equal = _{ "=" }
 quote_dubble = _{ "\"" }
 quote_single = _{ "'" }
 quote = _{ quote_dubble | quote_single }
-WHITESPACE = _{ " " | "\t" | "\r" | "\n" }
+whites = _{ (" " | "\t" | "\r" | "\n")* }
+white1 = _{ " " | "\t" | "\r" | "\n" }
