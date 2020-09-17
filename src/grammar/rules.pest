@@ -77,7 +77,7 @@ el_void_name_svg = @{
     | ^"circle"
 }
 el_void_name = @{ el_void_name_html | el_void_name_svg }
-el_void = _{ chevron_left_normal ~ el_void_name ~ attr* ~ (chevron_right_normal | chevron_right_closed) }
+el_void = _{ chevron_left_normal ~ whites ~ el_void_name ~ attr* ~ whites ~ (chevron_right_normal | chevron_right_closed) }
 el_void_xml = _{ chevron_left_normal ~ el_name ~ attr* ~ chevron_right_closed }
 
 // Open elements are default element that can take children 
